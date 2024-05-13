@@ -1,0 +1,30 @@
+services:
+  vswitch:
+    build: ./Dockerfile
+    image: ik8s-ovs
+    volumes:
+    - /var/run/openvswitch:/host/var/run/openvswitch
+    - /var/lib/openvswitch:/host/var/lib/openvswitch
+    network_mode: "host"
+    privileged: true
+    cap_add:
+    - SYS_MODULE
+    - NET_ADMIN
+    - SYS_NICE
+  init:
+    image: ik8s-ovs
+    volumes:
+    - /var/run/openvswitch:/host/var/run/openvswitch
+    - /var/lib/openvswitch:/host/var/lib/openvswitch
+    network_mode: "host"
+    privileged: true
+    command: ["./init.sh"]
+    cap_add:
+    - SYS_MODULE
+    - NET_ADMIN
+    - SYS_NICE
+    depends_on:
+    - vswitch
+    environment:
+    - OVS_BRIDGE=${OVS_BRIDGE}
+    - NODE_NIC=${NODE_NIC}
