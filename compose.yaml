@@ -1,6 +1,5 @@
 services:
   vswitch:
-    build: ./Dockerfile
     image: ik8s-ovs
     volumes:
     - /var/run/openvswitch:/host/var/run/openvswitch
